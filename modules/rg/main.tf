@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "rg" {
   tags = merge(local.tags,each.value.tags)
   lifecycle {
     prevent_destroy = true
-    ignore_changes = [ ["deploymentdate"] ]
+    ignore_changes = [tags["deploymentdate"]]
   }
   
 }
