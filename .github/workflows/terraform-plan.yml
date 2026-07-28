@@ -5,29 +5,39 @@ on:
         - '001'
 permissions: 
     id-token: write
-    contents: read        
+    contents: read
+    
 jobs:
     Dev_Plan_Job:
         runs-on: ubuntu-latest
-        name: ''
         environment: dev
+        defaults:
+          run:
+            working-directory: env/dev
         steps:
           - name: 'Github Checkout'
             uses: actions/checkout@v3
           - name: 'Azure Login'
-            uses: azure/login@v3
+            uses: azure/login@v4
             with:
                 client-id: ${{ vars.AZURE_CLIENT_ID }}
                 tenant-id: ${{ vars.AZURE_TENANT_ID }}
                 subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
                 enable-AzPSSession: true
-          - name: 'Azure CLI'
-            uses: azure/cli@v2
+          - name: 'Install Terraform on Github Actions Runner'
+            uses: hashicorp/setup-terraform@v4
             with:
-               azcliversion: latest
-               inlineScript: |
-                            az group list       
-        
+                terraform_wrapper: false
+          - name: 'Terraform format'
+            run: terrafrom fmt -check
+            continue-on-error: true
+          - name: 'Terraform initialize'
+            run: terraform init
+          - name: 'Terraform validate'
+            run: terraform validate -no-color
+          - name: 'Terraform Plan'
+            run: terraform plan -no-color -input=false                  
+
 
 
 
