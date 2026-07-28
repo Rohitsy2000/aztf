@@ -1,0 +1,34 @@
+on: 
+  push:
+    branches:
+        - '001'
+permissions: 
+    id-token: write
+    contents: read        
+jobs:
+    Dev_Plan_Job:
+        runs-on: ubuntu-latest
+        name: ''
+        environment: dev
+        steps:
+          - name: 'Github Checkout'
+            uses: actions/checkout@v3
+          - name: 'Azure Login'
+            uses: azure/login@v3
+            with:
+                client-id: ${{ vars.AZURE_CLIENT_ID }}
+                tenant-id: ${{ vars.AZURE_TENANT_ID }}
+                subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+                enable-AzPSSession: true
+          - name: 'Azure CLI'
+            uses: azure/cli@v2
+            with:
+               azcliversion: latest
+               inlineScript: |
+                            az group list       
+        
+
+
+
+
+          
