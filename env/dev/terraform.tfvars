@@ -4,7 +4,8 @@ rg = {
     location = "centralindia"
     tags     = { environment = "dev"
                 project = "tf"
-     owner = "platform-team"
+                owner = "platform-team"
+                managedby = "terraform"
     }
   }
 }  
