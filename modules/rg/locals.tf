@@ -1,6 +1,6 @@
 locals {
   tags = {
     deploymentdate = timestamp()
-    resourcetype = rg
+    resourcetype = "rg"
   }
 }
